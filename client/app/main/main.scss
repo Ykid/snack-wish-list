@@ -35,10 +35,15 @@
 }
 
 .wish-list-body {
+    height: calc(100% - 51px - 150px);
     background-color: #303D2D;
 }
 
 .wish-list-footer {
     background-color: #303D2D;
     padding-top: 70px;
+}
+
+html, body, div[ng-app="altitudeLabsApp"], body > div:first-of-type {
+    height: 100%;
 }
