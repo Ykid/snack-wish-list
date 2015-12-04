@@ -3,7 +3,8 @@
 angular.module('altitudeLabsApp')
   .controller('MainCtrl', function ($scope, $http) {
     $scope.awesomeThings = [];
-
+    var sample = [{
+    }];
     $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
     });

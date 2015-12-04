@@ -19,12 +19,26 @@
     color: #F5F5F5;
     text-align: center;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-    background: #4393B9;
+    background: #5EB547;
 }
 
 .footer {
     text-align: center;
     padding: 30px 0;
-    margin-top: 70px;
+
     border-top: 1px solid #E5E5E5;
+    color: #8d9999;
+}
+
+.page-header {
+    color: #fff;
+}
+
+.wish-list-body {
+    background-color: #303D2D;
+}
+
+.wish-list-footer {
+    background-color: #303D2D;
+    padding-top: 70px;
 }
