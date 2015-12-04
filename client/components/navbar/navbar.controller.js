@@ -3,8 +3,14 @@
 angular.module('altitudeLabsApp')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
     $scope.menu = [{
-      'title': 'Home',
+      'title': 'Wish List',
       'link': '/'
+    }, {
+      'title': 'History',
+      'link': '/history'
+    }, {
+      'title': 'Leader Board',
+      'link': '/leaderBoard'
     }];
 
     $scope.isCollapsed = true;
