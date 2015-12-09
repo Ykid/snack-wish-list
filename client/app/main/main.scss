@@ -35,7 +35,6 @@
 }
 
 .wish-list-body {
-    height: calc(100% - 51px - 150px);
     background-color: #303D2D;
 }
 
@@ -46,4 +45,45 @@
 
 html, body, div[ng-app="altitudeLabsApp"], body > div:first-of-type {
     height: 100%;
+}
+
+.snack-image {
+    padding-bottom: 90%;
+    /* margin-top: 36px; */
+    /* min-height: 300px; */
+    width: 90%;
+    /* min-width: 15vh; */
+    /* max-width: 300px; */
+    border: #fff solid 5px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+
+.snack-info {
+    width: 100%;
+    color: white;
+    padding: 4% 0px 0px 7%;
+    /* margin: auto; */
+    /* float: left; */
+}
+
+.snack-name {
+    font-size: 21px;
+}
+
+.snack-buttons {
+    text-align: right;
+}
+
+.snack-clear-float {
+    clear: both;
+}
+
+.snack-like-button {
+    margin: 5% 5% 0 0;
+    color: white;
+    background-color: #5EB547;
+    border-width: 2px;
+    border-color: rgba(48, 61, 45, 0.5);
 }
