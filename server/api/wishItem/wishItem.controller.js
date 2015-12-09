@@ -16,11 +16,66 @@ var Thing = require('../thing/thing.model');
 
 // Get list of wishItem
 exports.index = function(req, res) {
-  WishItem.find(function (err, wishItems) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, wishItems);
-  });
+  var listType = req.query.listType;
+  // Request db
+  if (listType === "outstanding") {
+    WishItem.find({hasBrought: false}).
+    populate('requestUsers[0].userId').
+    populate('thing').
+    exec(function (err, docs) {
+      handleGetWishItems(err, docs, req, res);
+    }); 
+
+  } else if (listType === "history") {
+    WishItem.find({hasBrought: true}).
+    populate('requestUsers[0].userId').
+    populate('thing').
+    exec(function (err, docs) {
+      handleGetWishItems(err, docs, req, res);
+    }); 
+
+  } else if (listType === "all") {
+    WishItem.find({}).
+    populate('requestUsers[0].userId').
+    populate('thing').
+    exec(function (err, docs) {
+      handleGetWishItems(err, docs, req, res);
+    }); 
+
+  }
+  // WishItem.find(function (err, wishItems) {
+  //   if(err) { return handleError(res, err); }
+  //   return res.json(200, wishItems);
+  // });
 };
+
+function handleGetWishItems(err, wishItems, req, res) {
+  if(err) { return handleError(res, err); }
+
+  var jsonItems = [];
+
+  var wishItemsLength = wishItems.length;
+  for (var i = 0; i < wishItemsLength; i++) {
+    var wishItem = wishItems[i];
+    var thing = wishItem.thing;
+
+    jsonItems[i] = 
+    {
+      "name": thing.name,
+      "quantity": wishItem.requireQuantity,
+      "hasBrought": wishItem.hasBrought,
+      "buyRepetition": thing.buyRepetition,
+      "noOfLikes": thing.noOfLikes,
+      "snackImageUrl": thing.snackImageUrl,
+      "price": thing.price,
+      "requesterName": wishItem.requestUsers[0].userId.name,
+      "availableLocations": thing.availableLocations
+    };
+  } // End of for loop
+
+  var result = {"wishItems": jsonItems};
+  return res.status(200).json({result});
+}
 
 // Get a single wishItem
 exports.show = function(req, res) {
@@ -46,10 +101,11 @@ exports.create = function(req, res) {
     if(err) { return handleError(res, err); }
 
     var objectIdOfThing;
-    console.log('thing', thing);
+    
     // Snack has already existed
     if (thing) {
       objectIdOfThing = thing._id;
+      createNewWishItem(objectIdOfThing, requestUserId, snackQuantity, req, res);
     } else {
       // Snack not existed: create new snack
       var newThingJSON =  
@@ -61,30 +117,14 @@ exports.create = function(req, res) {
         "noOfLikes": 0,
         "availableLocations": availableLocations
       };
-      console.log('newThingJSON', newThingJSON);
+
       Thing.create(newThingJSON, function (err, newThing) {
         if(err) { return handleError(res, err); }
         objectIdOfThing = newThing._id;
+        createNewWishItem(objectIdOfThing, requestUserId, snackQuantity, req, res);
       });
     }
 
-    // Create wish item
-    var newWishItemJSON = 
-    {
-      "thing": objectIdOfThing,
-      "requestUsers": 
-      [{
-        "userId": requestUserId,
-        "requireQuantity": snackQuantity
-      }],
-      "hasBrought": false,
-      "requireQuantity": snackQuantity
-    };
-
-    WishItem.create(newWishItemJSON, function (err, newWishItemJSON) {
-      if(err) { return handleError(res, err); }
-      return res.status(200).json({});
-    });
   });
   // WishItem.create(req.body, function (err, wishItem) {
     // if(err) { return handleError(res, err); }
@@ -92,6 +132,26 @@ exports.create = function(req, res) {
   //   mongoose.model('thing').find()function()err, ;
   // });
 };
+
+function createNewWishItem(objectIdOfThing, requestUserId, snackQuantity, req, res) {
+  // Create wish item
+  var newWishItemJSON = 
+  {
+    "thing": objectIdOfThing,
+    "requestUsers": 
+    [{
+      "userId": requestUserId,
+      "requireQuantity": snackQuantity
+    }],
+    "hasBrought": false,
+    "requireQuantity": snackQuantity
+  };
+
+  WishItem.create(newWishItemJSON, function (err, newWishItemJSON) {
+    if(err) { return handleError(res, err); }
+    return res.status(200).json({});
+  });
+}
 
 // Updates an existing wishItem in the DB.
 exports.update = function(req, res) {
