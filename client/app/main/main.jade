@@ -13,7 +13,12 @@ header#banner.hero-unit
           div.snack-image(ng-style="getBackgroundImage(thing.snackImageUrl)")
           div.snack-info
             div.snack-name {{thing.snackName}}
-            div Amount: {{thing.requestAmount}}
+            div
+              div
+                | Amount:&nbsp;&nbsp;
+                button.snack-update.btn.btn-default.btn-xs -
+                | {{' ' + thing.requestAmount + ' '}}
+                button.snack-update.btn.btn-default.btn-xs +
             div Shop: {{thing.availableLocaltions[0]}}
             div Price: {{thing.price}} HKD
             div Requester: {{thing.requester}}
