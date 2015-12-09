@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('altitudeLabsApp')
-  .controller('MainCtrl', function ($scope, $http, $window) {
+  .controller('MainCtrl', function ($scope, $http, $window, $location) {
     // $scope.snackList = [];
     $scope.filterName = '';
     var sample = [{
@@ -129,6 +129,10 @@ angular.module('altitudeLabsApp')
         }
       }
       return location;
+    }
+
+    $scope.goToLeaderBoard = function () {
+      $location.path('/leaderBoard');
     }
 
     $scope.getBackgroundImage = function(imageUrl) {

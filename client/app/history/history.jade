@@ -10,7 +10,7 @@ header#banner.hero-unit
       .col-lg-12
         h1.page-header History:
         .form-group
-          input#application-search-bar.form-control(type='text', ng-model='filterName' placeholder='Filter by snack name')
+          input.form-control(type='text', ng-model='filterName' placeholder='Filter by snack name')
         .col-md-4.col-lg-4.col-sm-6(ng-repeat='snackItem in snackList | wishListFilter:filterName track by myTracking(snackItem)')
           div.snack-image(ng-style="getBackgroundImage(snackItem.snackImageUrl)")
           div.snack-info
