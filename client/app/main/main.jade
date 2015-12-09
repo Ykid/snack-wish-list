@@ -9,8 +9,11 @@ header#banner.hero-unit
     .row
       .col-lg-12
         h1.page-header Wish List:
-        .form-group
-          input#application-search-bar.form-control(type='text', ng-model='filterName' placeholder='Filter snack wish list by shop location')
+        .form-group.leader-board-center-align
+          div.leader-board-container
+            input.form-control.leader-board-bar(type='text', ng-model='filterName' placeholder='filter by shop location')
+          div.leader-board-container
+            button.leader-board-button.btn.btn-success(ng-click="goToLeaderBoard()") Place my order!
         .col-md-4.col-lg-4.col-sm-6(ng-repeat='snackItem in snackList | wishListFilter:filterName:"location" track by myTracking(snackItem)')
           div.snack-image(ng-style="getBackgroundImage(snackItem.snackImageUrl)")
           div.snack-info
