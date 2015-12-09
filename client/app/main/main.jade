@@ -21,7 +21,7 @@ header#banner.hero-unit
                 button.snack-update.btn.btn-default.btn-xs(ng-click="minusOne(snackItem)") -
                 | {{' ' + snackItem.requestAmount + ' '}}
                 button.snack-update.btn.btn-default.btn-xs(ng-click="addOne(snackItem)") +
-            div Shop: {{getLocations(snackItem)}}
+            div.snack-location Shop: {{getLocations(snackItem)}}
             div Price: {{snackItem.price}} HKD
             div Requester: {{snackItem.requester}}
             div Likes: {{snackItem.likes}}
