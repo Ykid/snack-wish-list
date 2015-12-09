@@ -14,10 +14,17 @@ var Thing = require('./thing.model');
 
 // Get list of things
 exports.index = function(req, res) {
-  Thing.find(function (err, things) {
+  Thing.find({})
+  .sort({buyRepetition: -1, noOfLikes: -1})
+  .exec(function(err, things){
     if(err) { return handleError(res, err); }
-    return res.json(200, things);
+    if(!thing) { return res.send(404); }
+    return res.json(thing);
   });
+  // Thing.find(function (err, things) {
+  //   if(err) { return handleError(res, err); }
+  //   return res.json(200, things);
+  // });
 };
 
 // Get a single thing
