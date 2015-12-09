@@ -3,16 +3,19 @@
 angular.module('altitudeLabsApp')
   .controller('MainCtrl', function ($scope, $http, $window) {
     // $scope.snackList = [];
+    $scope.filterName = '';
     var sample = [{
+      _id: '112',
       snackName:'Snacks Name',
       requestAmount: 2,
       snackImageUrl: 'https://www.geppettogroup.com/wp-content/uploads/2011/05/Scooby-Snacks1.jpg',
       likes: 5,
       price: 12,
       requester: 'Leonard',
-      availableLocaltions: ['park and shop'],
+      availableLocaltions: ['park and shop', 'sasa', 'joyo'],
       requestedTimes: 1
     }, {
+      _id: '113',
       snackName:'Snacks 2 Name',
       requestAmount: 3,
       snackImageUrl: 'http://www.irvineparkrailroad.com/images/heroshots/12134826533.jpg',
@@ -22,6 +25,7 @@ angular.module('altitudeLabsApp')
       availableLocaltions: ['711'],
       requestedTimes: 20
     }, {
+      _id: '111',
       snackName:'Snacks 3 Name',
       requestAmount: 4,
       snackImageUrl: 'http://www.firstuccdc.org/wp-content/uploads/2013/07/snacks.png',
@@ -99,6 +103,10 @@ angular.module('altitudeLabsApp')
       return false;
     }
 
+    $scope.myTracking = function(snackItem) {
+      return snackItem._id;
+    }
+
     $scope.addThing = function() {
       if($scope.newThing === '') {
         return;
@@ -110,6 +118,18 @@ angular.module('altitudeLabsApp')
     $scope.deleteThing = function(thing) {
       $http.delete('/api/things/' + thing._id);
     };
+
+    $scope.getLocations = function (snackItem) {
+      var i,
+          location = '';
+      for (i = 0; i < snackItem.availableLocaltions.length; i++) {
+        location = location + snackItem.availableLocaltions[i];
+        if (i !== snackItem.availableLocaltions.length - 1) {
+          location = location + ', '
+        }
+      }
+      return location;
+    }
 
     $scope.getBackgroundImage = function(imageUrl) {
       return {

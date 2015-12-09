@@ -9,7 +9,9 @@ header#banner.hero-unit
     .row
       .col-lg-12
         h1.page-header Wish List:
-        .col-md-4.col-lg-4.col-sm-6(ng-repeat='snackItem in snackList')
+        .form-group
+          input#application-search-bar.form-control(type='text', ng-model='filterName' placeholder='Filter snack wish list by shop location')
+        .col-md-4.col-lg-4.col-sm-6(ng-repeat='snackItem in snackList | wishListFilter:filterName:"location" track by myTracking(snackItem)')
           div.snack-image(ng-style="getBackgroundImage(snackItem.snackImageUrl)")
           div.snack-info
             div.snack-name {{snackItem.snackName}}
@@ -19,7 +21,7 @@ header#banner.hero-unit
                 button.snack-update.btn.btn-default.btn-xs(ng-click="minusOne(snackItem)") -
                 | {{' ' + snackItem.requestAmount + ' '}}
                 button.snack-update.btn.btn-default.btn-xs(ng-click="addOne(snackItem)") +
-            div Shop: {{snackItem.availableLocaltions[0]}}
+            div Shop: {{getLocations(snackItem)}}
             div Price: {{snackItem.price}} HKD
             div Requester: {{snackItem.requester}}
             div Likes: {{snackItem.likes}}
