@@ -61,11 +61,10 @@ html, body, div[ng-app="altitudeLabsApp"], body > div:first-of-type {
 }
 
 .snack-info {
-    width: 100%;
+    width: 70%;
     color: white;
-    padding: 4% 0px 0px 15%;
-    /* margin: auto; */
-    /* float: left; */
+    padding: 4% 0px 0px 0;
+    margin: auto;
 }
 
 .snack-name {
@@ -104,7 +103,6 @@ html, body, div[ng-app="altitudeLabsApp"], body > div:first-of-type {
 
 .snack-buttons {
     text-align: right;
-    padding-right: 15%;
 }
 
 .snack-clear-float {
@@ -112,7 +110,7 @@ html, body, div[ng-app="altitudeLabsApp"], body > div:first-of-type {
 }
 
 .snack-like-button {
-    margin: 5% 5% 0 0;
+    margin: 5% 0 0 5%;
     color: white;
     background-color: #5EB547;
     border-width: 1px;
@@ -125,4 +123,13 @@ html, body, div[ng-app="altitudeLabsApp"], body > div:first-of-type {
     border-width: 1px;
     color: white;
     border-color: rgba(48, 61, 45, 0.5);
+}
+
+.snack-location{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    line-height: 19px;
+    height: 19px;
+    white-space: nowrap;
 }

@@ -12,7 +12,7 @@ angular.module('altitudeLabsApp')
       likes: 5,
       price: 12,
       requester: 'Leonard',
-      availableLocaltions: ['park and shop', 'sasa', 'joyo'],
+      availableLocaltions: ['park and shop', 'sasa', 'joyo', 'park and shop', 'park and shop', 'park and shop'],
       requestedTimes: 1
     }, {
       _id: '113',
