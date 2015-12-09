@@ -9,28 +9,28 @@ header#banner.hero-unit
     .row
       .col-lg-12
         h1.page-header Wish List:
-        .col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in awesomeThings')
-          div.snack-image(ng-style="getBackgroundImage(thing.snackImageUrl)")
+        .col-md-4.col-lg-4.col-sm-6(ng-repeat='snackItem in snackList')
+          div.snack-image(ng-style="getBackgroundImage(snackItem.snackImageUrl)")
           div.snack-info
-            div.snack-name {{thing.snackName}}
+            div.snack-name {{snackItem.snackName}}
             div
               div
                 | Amount:&nbsp;&nbsp;
-                button.snack-update.btn.btn-default.btn-xs -
-                | {{' ' + thing.requestAmount + ' '}}
-                button.snack-update.btn.btn-default.btn-xs +
-            div Shop: {{thing.availableLocaltions[0]}}
-            div Price: {{thing.price}} HKD
-            div Requester: {{thing.requester}}
-            div Likes: {{thing.likes}}
-            div Requested: {{thing.requestedTimes}} times
+                button.snack-update.btn.btn-default.btn-xs(ng-click="minusOne(snackItem)") -
+                | {{' ' + snackItem.requestAmount + ' '}}
+                button.snack-update.btn.btn-default.btn-xs(ng-click="addOne(snackItem)") +
+            div Shop: {{snackItem.availableLocaltions[0]}}
+            div Price: {{snackItem.price}} HKD
+            div Requester: {{snackItem.requester}}
+            div Likes: {{snackItem.likes}}
+            div Requested: {{snackItem.requestedTimes}} times
             div.snack-buttons
-              button.snack-like-button.btn.btn-default.btn-xs I like it too!
-              button.snack-like-button.btn.btn-default.btn-xs mark as bought
+              button.snack-like-button.btn.btn-default.btn-xs(ng-click="updateLikeStatus(snackItem)") {{checkLikeStatus(snackItem)}}
+              button.snack-like-button.btn.btn-default.btn-xs(ng-click="updateMarkStatus(snackItem)") {{checkMarkedStatus(snackItem)}}
           div.snack-clear-float
 
-            //- a(href='#', tooltip='{{thing.info}}')
-            //-   | {{thing.name}}
+            //- a(href='#', tooltip='{{snackItem.info}}')
+            //-   | {{snackItem.name}}
   .wish-list-footer
     footer.footer
       .container
@@ -40,3 +40,7 @@ header#banner.hero-unit
           //- a(href='https://twitter.com/tyhenkel') @tyhenkel
           //- = ' | '
           //- a(href='https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open') Issues
+  .wish-list-summary(ng-show="showSummary()")
+    div Subtotal: {{getSubtotal()}} HKD
+    div
+      button.btn.btn-default I bought them!

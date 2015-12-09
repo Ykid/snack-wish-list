@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('altitudeLabsApp')
-  .controller('MainCtrl', function ($scope, $http) {
-    $scope.awesomeThings = [];
+  .controller('MainCtrl', function ($scope, $http, $window) {
+    // $scope.snackList = [];
     var sample = [{
       snackName:'Snacks Name',
       requestAmount: 2,
@@ -31,11 +31,73 @@ angular.module('altitudeLabsApp')
       availableLocaltions: ['759'],
       requestedTimes: 3
     }];
-    $scope.awesomeThings = sample;
+    $scope.snackList = sample;
 
-    // $http.get('/api/things').success(function(awesomeThings) {
-    //   $scope.awesomeThings = awesomeThings;
-    // });
+    //change the display of the button according to the
+    //like status
+    $scope.checkLikeStatus = function (snackItem) {
+      if (snackItem.isLiked) {
+        return 'unlike it';
+      } else {
+        return 'I like it too!';
+      }
+    };
+
+    //TBD: send to the server to update the item status
+    $scope.updateLikeStatus = function (snackItem) {
+      if (snackItem.isLiked) {
+        $window.alert("unlike it");
+      } else {
+        $window.alert("like it");
+      }
+      snackItem.isLiked = !snackItem.isLiked;
+    };
+
+    $scope.updateMarkStatus = function (snackItem) {
+      if (snackItem.isMarked) {
+        snackItem.isMarked = !snackItem.isMarked;
+      } else {
+        snackItem.isMarked = true;
+      }
+      return;
+    }
+
+    $scope.checkMarkedStatus = function (snackItem) {
+      if (snackItem.isMarked) {
+        return 'deselect'
+      } else {
+        return 'select';
+      }
+    }
+
+    $scope.addOne = function(snackItem) {
+      snackItem.requestAmount = snackItem.requestAmount + 1;
+    }
+
+    $scope.minusOne = function(snackItem) {
+      snackItem.requestAmount = snackItem.requestAmount - 1;
+    }
+
+    $scope.getSubtotal = function() {
+      var i,
+          sum = 0;
+      for (i = 0; i < $scope.snackList.length; i++) {
+          if ($scope.snackList[i].price && $scope.snackList[i].isMarked) {
+            sum = sum + $scope.snackList[i].price;
+          }
+      }
+      return sum + '';
+    }
+
+    $scope.showSummary = function() {
+      var i;
+      for (i = 0; i < $scope.snackList.length; i++) {
+        if ($scope.snackList[i].isMarked) {
+          return true;
+        }
+      }
+      return false;
+    }
 
     $scope.addThing = function() {
       if($scope.newThing === '') {

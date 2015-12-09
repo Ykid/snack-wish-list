@@ -40,7 +40,7 @@
 
 .wish-list-footer {
     background-color: #303D2D;
-    padding-top: 70px;
+    padding-top: 90px;
 }
 
 html, body, div[ng-app="altitudeLabsApp"], body > div:first-of-type {
@@ -70,6 +70,36 @@ html, body, div[ng-app="altitudeLabsApp"], body > div:first-of-type {
 
 .snack-name {
     font-size: 21px;
+}
+
+.wish-list-summary {
+    background-color: #222222;
+    position: fixed;
+    width: 100%;
+    // padding: 3vh;
+    bottom: 0px;
+    height: auto;
+    text-align: center;
+
+    > div {
+        display: inline-block;
+        color: #fff;
+        font-size: 30px;
+        margin: auto 0;
+        line-height: 90px;
+        text-align: center;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    button {
+        background-color: #5EB547;
+        color: #fff;
+        font-size: 30px;
+        /* margin-top: -6px; */
+        height: 50px;
+        line-height: 36px;
+    }
 }
 
 .snack-buttons {
