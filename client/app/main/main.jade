@@ -9,10 +9,23 @@ header#banner.hero-unit
     .row
       .col-lg-12
         h1.page-header Wish List:
-        ul.nav.nav-tabs.nav-stacked.col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in awesomeThings')
-          li
-            a(href='#', tooltip='{{thing.info}}')
-              | {{thing.name}}
+        .col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in awesomeThings')
+          div.snack-image(ng-style="getBackgroundImage(thing.snackImageUrl)")
+          div.snack-info
+            div.snack-name {{thing.snackName}}
+            div Amount: {{thing.requestAmount}}
+            div Shop: {{thing.availableLocaltions[0]}}
+            div Price: {{thing.price}} HKD
+            div Requester: {{thing.requester}}
+            div Likes: {{thing.likes}}
+            div Requested: {{thing.requestedTimes}} times
+            div.snack-buttons
+              button.snack-like-button.btn.btn-default.btn-xs I like it too!
+              button.snack-like-button.btn.btn-default.btn-xs mark as bought
+          div.snack-clear-float
+
+            //- a(href='#', tooltip='{{thing.info}}')
+            //-   | {{thing.name}}
   .wish-list-footer
     footer.footer
       .container

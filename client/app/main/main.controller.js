@@ -4,17 +4,32 @@ angular.module('altitudeLabsApp')
   .controller('MainCtrl', function ($scope, $http) {
     $scope.awesomeThings = [];
     var sample = [{
-      name:'Snacks 1',
-      amount: 2,
-      imageUrl: 'https://www.geppettogroup.com/wp-content/uploads/2011/05/Scooby-Snacks1.jpg'
+      snackName:'Snacks Name',
+      requestAmount: 2,
+      snackImageUrl: 'https://www.geppettogroup.com/wp-content/uploads/2011/05/Scooby-Snacks1.jpg',
+      likes: 5,
+      price: 12,
+      requester: 'Leonard',
+      availableLocaltions: ['park and shop'],
+      requestedTimes: 1
     }, {
-      name:'Snacks 2',
-      amount: 3,
-      imageUrl: 'http://www.irvineparkrailroad.com/images/heroshots/12134826533.jpg'
+      snackName:'Snacks 2 Name',
+      requestAmount: 3,
+      snackImageUrl: 'http://www.irvineparkrailroad.com/images/heroshots/12134826533.jpg',
+      likes: 2,
+      price: 24,
+      requester: 'Anthony',
+      availableLocaltions: ['711'],
+      requestedTimes: 20
     }, {
-      name:'Snacks 3',
-      amount: 4,
-      imageUrl: 'http://www.firstuccdc.org/wp-content/uploads/2013/07/snacks.png'
+      snackName:'Snacks 3 Name',
+      requestAmount: 4,
+      snackImageUrl: 'http://www.firstuccdc.org/wp-content/uploads/2013/07/snacks.png',
+      likes: 1,
+      price: 13,
+      requester: 'Andrianto',
+      availableLocaltions: ['759'],
+      requestedTimes: 3
     }];
     $scope.awesomeThings = sample;
 
@@ -33,4 +48,13 @@ angular.module('altitudeLabsApp')
     $scope.deleteThing = function(thing) {
       $http.delete('/api/things/' + thing._id);
     };
+
+    $scope.getBackgroundImage = function(imageUrl) {
+      return {
+        'background-image' : 'url(' + imageUrl + ')',
+        'background-repeat': 'no-repeat',
+        'background-size': 'cover',
+        'background-position': '50% 50%'
+      };
+    }
   });
