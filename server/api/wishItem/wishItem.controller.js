@@ -153,6 +153,26 @@ function createNewWishItem(objectIdOfThing, requestUserId, snackQuantity, req, r
   });
 }
 
+// Mark wish item as brought
+exports.markAsBrought = function(req, res) {
+  var objectIds = req.body.objectIds;
+  var updateData = {_id: {$in: objectIds}};
+
+  WishItem.update(updateData, 
+    { hasBrought: true }, 
+    { multi: true },
+    function (err, raw) {
+      if(err) { return handleError(res, err); }
+      return res.status(200).json({});
+  });
+
+  // WishItem.findByIdAndUpdate(objectId, updateData, function(err, wishItem){
+  //   if (err) { return handleError(res, err); }
+  //   if(!wishItem) { return res.send(404); }
+  //   return res.status(200).json(wishItem);
+  // });
+}
+
 // Updates an existing wishItem in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
