@@ -5,8 +5,11 @@ var mongoose = require('mongoose'),
 
 var ThingSchema = new Schema({
   name: String,
-  info: String,
-  active: Boolean
+  snackImageUrl: String,
+  price: Number,
+  buyRepetition: Number,
+  noOfLikes: Number,
+  availableLocations: [String]
 });
 
 module.exports = mongoose.model('Thing', ThingSchema);
