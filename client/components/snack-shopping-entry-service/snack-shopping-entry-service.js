@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('altitudeLabsApp')
-  .factory('snackItemService', function itermFactory($http, Auth) {
-    var snackItemRequester = {};
+  .factory('snackShoppingEntryService', function snackShoppingEntryServiceFactory($http, Auth) {
+    var snackShoppingEntryRequester = {};
 
     //get a list of snacks sorted by popularity
-    snackItemRequester.getItems = function () {
+    snackShoppingEntryRequester.getItems = function () {
       return $http.get('/api/things').then(
         function (successResponse) {
           var snacks = [], i, singleSnack;
@@ -34,10 +34,10 @@ angular.module('altitudeLabsApp')
         });
     };
 
-    //likes/unlikes a snack item
-    snackItemRequester.likeOrUnlike = function (data) {
-      return $http.put('/api/things/likeOrUnlike', data);
+    //create a new wish item
+    snackShoppingEntryRequester.requestNewItem = function (data) {
+      return $http.post('/api/wishItems', data);
     };
 
-    return snackItemRequester;
+    return snackShoppingEntryRequester;
   });
