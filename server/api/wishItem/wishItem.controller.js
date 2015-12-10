@@ -59,13 +59,16 @@ function handleGetWishItems(err, wishItems, req, res) {
     var wishItem = wishItems[i];
     var thing = wishItem.thing;
 
+    var likedByUserIds = thing.likedByUserIds;
+    var liked = likedByUserIds.indexOf(req.user._id) !== -1;
+
     jsonItems[i] = 
     {
       "name": thing.name,
       "quantity": wishItem.requireQuantity,
       "hasBrought": wishItem.hasBrought,
       "buyRepetition": thing.buyRepetition,
-      "noOfLikes": thing.noOfLikes,
+      "liked": liked,
       "snackImageUrl": thing.snackImageUrl,
       "price": thing.price,
       "requesterName": wishItem.requestUsers[0].userId.name,
@@ -171,6 +174,26 @@ exports.markAsBrought = function(req, res) {
   //   if(!wishItem) { return res.send(404); }
   //   return res.status(200).json(wishItem);
   // });
+}
+
+// Update quantity of a wishitem
+exports.updateQuantity = function(req, res) {
+  var objectId = req.body.objectId;
+  var quantity = req.body.quantity;
+
+  // Delete item 
+  if (quantity <= 0) {
+    WishItem.findByIdAndRemove(objectId, function (err, doc){
+      if(err) { return handleError(res, err); }
+      return res.status(200).json({});
+    });
+  } else {
+    // Update quanity of item
+    WishItem.findByIdAndUpdate(objectId, {requireQuantity: quantity}, {"new": true}, function (err, doc){
+      if(err) { return handleError(res, err); }
+      return res.status(200).json(doc);
+    });
+  }
 }
 
 // Updates an existing wishItem in the DB.
