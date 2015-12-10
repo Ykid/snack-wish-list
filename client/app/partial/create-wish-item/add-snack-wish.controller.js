@@ -1,4 +1,4 @@
-angular.module('altitudeLabsApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, selectedWishItem, snackItemService, Modal) {
+angular.module('altitudeLabsApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, selectedWishItem, snackShoppingEntryService, Modal) {
 
   $scope.wishItem = selectedWishItem || [];
 
@@ -29,7 +29,7 @@ angular.module('altitudeLabsApp').controller('ModalInstanceCtrl', function ($sco
       availableLocations: locations
     }
 
-    snackItemService.requestNewItem(data).then(
+    snackShoppingEntryService.requestNewItem(data).then(
       function (successResponse) {
         $uibModalInstance.close('close');
       },

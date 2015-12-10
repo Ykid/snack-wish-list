@@ -30,7 +30,7 @@ header#banner.hero-unit
             div Likes: {{snackItem.likes}}
             div Requested: {{snackItem.requestedTimes}} times
             div.snack-buttons
-              button.snack-like-button.btn.btn-default.btn-xs(ng-click="updateLikeStatus(snackItem)") {{checkLikeStatus(snackItem)}}
+              button.snack-like-button.btn.btn-default.btn-xs(ng-disabled="{{snackItem.isDisabled}}" ng-click="updateLike(snackItem)") {{checkLikeStatus(snackItem)}}
               button.snack-like-button.btn.btn-default.btn-xs(ng-click="updateMarkStatus(snackItem)") {{checkMarkedStatus(snackItem)}}
           div.snack-clear-float
 
@@ -48,4 +48,4 @@ header#banner.hero-unit
   .wish-list-summary(ng-show="showSummary()")
     div Subtotal: {{getSubtotal()}} HKD
     div
-      button.btn.btn-default I bought them!
+      button.btn.btn-default(ng-click="buyItems()") I bought them!
