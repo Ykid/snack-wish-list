@@ -5,25 +5,26 @@ angular.module('altitudeLabsApp')
     var snackShoppingEntryRequester = {};
 
     //get a list of snacks sorted by popularity
-    snackShoppingEntryRequester.getItems = function () {
-      return $http.get('/api/things').then(
+    snackShoppingEntryRequester.getEntries = function (option) {
+      return $http.get('/api/wishItems/?listType=' + option).then(
         function (successResponse) {
-          var snacks = [], i, singleSnack;
-          for (i = 0; i < successResponse.data.length; i++) {
-            singleSnack = {
-              _id: successResponse.data[i]._id,
-              snackName: successResponse.data[i].name || 'no name',
-              snackImageUrl: successResponse.data[i].snackImageUrl || 'https://git.reviewboard.kde.org/media/uploaded/files/2015/07/18/a70d8ab6-1bbf-4dcc-b11f-524c2f56b14a__picture_default_cover.jpg',
-              likes: successResponse.data[i].likes || 0,
-              price: successResponse.data[i].price || 'missing',
-              availableLocaltions: successResponse.data[i].availableLocations || ['not available'],
-              requestedTimes: successResponse.data[i].buyRepetition || 0,
-              isLiked: successResponse.data[i].liked || false,
+          var snackShoppingEntries = [], i, singleSnackShoppingEntry;
+          for (i = 0; i < successResponse.data.wishItems.length; i++) {
+            singleSnackShoppingEntry = {
+              _id: successResponse.data.wishItems[i]._id,
+              snackName: successResponse.data.wishItems[i].name || 'no name',
+              snackImageUrl: successResponse.data.wishItems[i].snackImageUrl || 'https://git.reviewboard.kde.org/media/uploaded/files/2015/07/18/a70d8ab6-1bbf-4dcc-b11f-524c2f56b14a__picture_default_cover.jpg',
+              requestAmount: successResponse.data.wishItems[i].quantity || 'not available',
+              likes: successResponse.data.wishItems[i].likes || 0,
+              price: successResponse.data.wishItems[i].price || 'missing',
+              availableLocaltions: successResponse.data.wishItems[i].availableLocations || ['not available'],
+              requestedTimes: successResponse.data.wishItems[i].buyRepetition || 0,
+              isLiked: successResponse.data.wishItems[i].liked || false,
               isDisabled: false
             };
-            snacks.push(singleSnack);
+            snackShoppingEntries.push(singleSnackShoppingEntry);
           }
-          return snacks;
+          return snackShoppingEntries;
         },
         function (errorResponse) {
           if (errorResponse && errorResponse.data && typeof errorResponse.data.message === 'string'){
