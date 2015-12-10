@@ -30,3 +30,4 @@ node_modules
 .sass-cache
 .tmp
 .DS_Store
+bower_components
