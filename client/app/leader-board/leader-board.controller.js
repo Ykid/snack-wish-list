@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('altitudeLabsApp')
-  .controller('LeaderBoardCtrl', function ($scope, $http, $window, $uibModal, $log) {
+  .controller('LeaderBoardCtrl', function ($scope, $http, $window, $uibModal, $log, Modal) {
     // $scope.snackList = [];
     $scope.filterName = '';
     var sample = [{
@@ -140,6 +140,7 @@ angular.module('altitudeLabsApp')
       };
     }
     $scope.items = ['item1', 'item2', 'item3'];
+    $scope.openAlert = Modal.confirm.showError();
     $scope.open = function (size, selectedWishItem) {
 
       var modalInstance = $uibModal.open({
