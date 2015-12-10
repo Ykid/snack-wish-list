@@ -24,7 +24,7 @@ exports.index = function(req, res) {
     populate('thing').
     exec(function (err, docs) {
       handleGetWishItems(err, docs, req, res);
-    }); 
+    });
 
   } else if (listType === "history") {
     WishItem.find({hasBrought: true}).
@@ -32,7 +32,7 @@ exports.index = function(req, res) {
     populate('thing').
     exec(function (err, docs) {
       handleGetWishItems(err, docs, req, res);
-    }); 
+    });
 
   } else if (listType === "all") {
     WishItem.find({}).
@@ -40,7 +40,7 @@ exports.index = function(req, res) {
     populate('thing').
     exec(function (err, docs) {
       handleGetWishItems(err, docs, req, res);
-    }); 
+    });
 
   }
   // WishItem.find(function (err, wishItems) {
@@ -62,7 +62,7 @@ function handleGetWishItems(err, wishItems, req, res) {
     var likedByUserIds = thing.likedByUserIds;
     var liked = likedByUserIds.indexOf(req.user._id) !== -1;
 
-    jsonItems[i] = 
+    jsonItems[i] =
     {
       "name": thing.name,
       "quantity": wishItem.requireQuantity,
@@ -77,7 +77,7 @@ function handleGetWishItems(err, wishItems, req, res) {
   } // End of for loop
 
   var result = {"wishItems": jsonItems};
-  return res.status(200).json({result});
+  return res.status(200).json(result);
 }
 
 // Get a single wishItem
@@ -104,14 +104,14 @@ exports.create = function(req, res) {
     if(err) { return handleError(res, err); }
 
     var objectIdOfThing;
-    
+
     // Snack has already existed
     if (thing) {
       objectIdOfThing = thing._id;
       createNewWishItem(objectIdOfThing, requestUserId, snackQuantity, req, res);
     } else {
       // Snack not existed: create new snack
-      var newThingJSON =  
+      var newThingJSON =
       {
         "name": snackName,
         "snackImageUrl": snackImageUrl,
@@ -138,10 +138,10 @@ exports.create = function(req, res) {
 
 function createNewWishItem(objectIdOfThing, requestUserId, snackQuantity, req, res) {
   // Create wish item
-  var newWishItemJSON = 
+  var newWishItemJSON =
   {
     "thing": objectIdOfThing,
-    "requestUsers": 
+    "requestUsers":
     [{
       "userId": requestUserId,
       "requireQuantity": snackQuantity
@@ -161,8 +161,8 @@ exports.markAsBrought = function(req, res) {
   var objectIds = req.body.objectIds;
   var updateData = {_id: {$in: objectIds}};
 
-  WishItem.update(updateData, 
-    { hasBrought: true }, 
+  WishItem.update(updateData,
+    { hasBrought: true },
     { multi: true },
     function (err, raw) {
       if(err) { return handleError(res, err); }
@@ -211,7 +211,7 @@ exports.updateQuantity = function(req, res) {
 
   });
 
-  // Delete item 
+  // Delete item
   // if (quantity <= 0) {
   //   WishItem.findByIdAndRemove(objectId, function (err, doc){
   //     if(err) { return handleError(res, err); }
