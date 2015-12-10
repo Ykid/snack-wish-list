@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('altitudeLabsApp')
-  .factory('Modal', function ($rootScope, $modal) {
+  .factory('Modal', function ($rootScope, $uibModal) {
     /**
      * Opens a modal
      * @param  {Object} scope      - an object to be merged with modal's scope
@@ -15,7 +15,7 @@ angular.module('altitudeLabsApp')
 
       angular.extend(modalScope, scope);
 
-      return $modal.open({
+      return $uibModal.open({
         templateUrl: 'components/modal/modal.html',
         windowClass: modalClass,
         scope: modalScope
@@ -33,7 +33,7 @@ angular.module('altitudeLabsApp')
          * @param  {Function} del - callback, ran when delete is confirmed
          * @return {Function}     - the function to open the modal (ex. myModalFn)
          */
-        delete: function(del) {
+        showError: function(del) {
           del = del || angular.noop;
 
           /**
@@ -43,31 +43,25 @@ angular.module('altitudeLabsApp')
            */
           return function() {
             var args = Array.prototype.slice.call(arguments),
-                name = args.shift(),
-                deleteModal;
+                message = args.shift(),
+                errorModal;
 
-            deleteModal = openModal({
+            errorModal = openModal({
               modal: {
                 dismissable: true,
-                title: 'Confirm Delete',
-                html: '<p>Are you sure you want to delete <strong>' + name + '</strong> ?</p>',
+                title: 'Error',
+                html: '<p>'+ message + '</p>',
                 buttons: [{
-                  classes: 'btn-danger',
-                  text: 'Delete',
-                  click: function(e) {
-                    deleteModal.close(e);
-                  }
-                }, {
                   classes: 'btn-default',
-                  text: 'Cancel',
+                  text: 'OK',
                   click: function(e) {
-                    deleteModal.dismiss(e);
+                    errorModal.dismiss(e);
                   }
                 }]
               }
             }, 'modal-danger');
 
-            deleteModal.result.then(function(event) {
+            errorModal.result.then(function(event) {
               del.apply(event, args);
             });
           };
