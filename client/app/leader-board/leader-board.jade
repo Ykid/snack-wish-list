@@ -21,7 +21,7 @@ header#banner.hero-unit
             div Likes: {{snackItem.likes}}
             div Requested: {{snackItem.requestedTimes}} times
             div.snack-buttons
-              button.snack-like-button.btn.btn-default.btn-xs(ng-click="openAlert('lalala')") {{checkLikeStatus(snackItem)}}
+              button.snack-like-button.btn.btn-default.btn-xs(ng-disabled="{{snackItem.isDisabled}}" ng-click="updateLike(snackItem)") {{checkLikeStatus(snackItem)}}
               button.snack-like-button.btn.btn-default.btn-xs(ng-click="open('lg', snackItem)") order again
           div.snack-clear-float
 
