@@ -4,7 +4,7 @@ angular.module('altitudeLabsApp').controller('ModalInstanceCtrl', function ($sco
 
   $scope.snackImageUrl = $scope.wishItem && $scope.wishItem.snackImageUrl;
   $scope.snackName = $scope.wishItem && $scope.wishItem.snackName;
-  $scope.snackShops = $scope.wishItem && $scope.wishItem.availableLocaltions && $scope.wishItem.availableLocaltions.join(' ');
+  $scope.snackShops = $scope.wishItem && $scope.wishItem.availableLocaltions && $scope.wishItem.availableLocaltions.join(', ');
   $scope.snackPrice = $scope.wishItem && $scope.wishItem.price;
 
   $scope.showPreviewImage = function(snackImageUrl) {
