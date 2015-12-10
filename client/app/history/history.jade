@@ -22,7 +22,7 @@ header#banner.hero-unit
             div Likes: {{snackItem.likes}}
             div Requested: {{snackItem.requestedTimes}} times
             div.snack-buttons
-              button.snack-like-button.btn.btn-default.btn-xs(ng-click="updateLikeStatus(snackItem)") order again
+              button.snack-like-button.btn.btn-default.btn-xs(ng-click="open('lg', snackItem)") order again
           div.snack-clear-float
 
   .wish-list-footer

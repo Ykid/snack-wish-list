@@ -28,7 +28,7 @@ angular.module('altitudeLabsApp').controller('ModalInstanceCtrl', function ($sco
       price: $scope.snackPrice,
       availableLocations: locations
     }
-    console.log('data', data);
+
     snackItemService.requestNewItem(data).then(
       function (successResponse) {
         $uibModalInstance.close('close');
