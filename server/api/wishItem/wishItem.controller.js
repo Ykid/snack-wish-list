@@ -179,21 +179,51 @@ exports.markAsBrought = function(req, res) {
 // Update quantity of a wishitem
 exports.updateQuantity = function(req, res) {
   var objectId = req.body.objectId;
-  var quantity = req.body.quantity;
+  var addOrMinus = req.body.addOrMinus;
+
+  WishItem.findById(objectId, function (err, wishItem) {
+    if(err) { return handleError(res, err); }
+    if(!wishItem) { return res.send(404); }
+
+    // Get new quantity
+    var quantity = wishItem.requireQuantity;
+    if (addOrMinus === "add") {
+      quantity++;
+    } else {
+      quantity--;
+    }
+
+    if (quantity <= 0) {
+      // Delete item
+      wishItem.remove(function (err, doc) {
+        if(err) { return handleError(res, err); }
+        return res.status(200).json({});
+      });
+    } else {
+      // Update quanity of item
+      wishItem.requireQuantity = quantity;
+      wishItem.save(function (err) {
+        if(err) { return handleError(res, err); }
+        return res.status(200).json({});
+      });
+    }
+
+
+  });
 
   // Delete item 
-  if (quantity <= 0) {
-    WishItem.findByIdAndRemove(objectId, function (err, doc){
-      if(err) { return handleError(res, err); }
-      return res.status(200).json({});
-    });
-  } else {
-    // Update quanity of item
-    WishItem.findByIdAndUpdate(objectId, {requireQuantity: quantity}, {"new": true}, function (err, doc){
-      if(err) { return handleError(res, err); }
-      return res.status(200).json(doc);
-    });
-  }
+  // if (quantity <= 0) {
+  //   WishItem.findByIdAndRemove(objectId, function (err, doc){
+  //     if(err) { return handleError(res, err); }
+  //     return res.status(200).json({});
+  //   });
+  // } else {
+  //   // Update quanity of item
+  //   WishItem.findByIdAndUpdate(objectId, {requireQuantity: quantity}, {"new": true}, function (err, doc){
+  //     if(err) { return handleError(res, err); }
+  //     return res.status(200).json(doc);
+  //   });
+  // }
 }
 
 // Updates an existing wishItem in the DB.

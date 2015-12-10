@@ -79,7 +79,8 @@ exports.likeOrUnlike = function (req, res) {
   var liked = req.body.liked;
 
   Thing.findById(objectId, function (err, thing) {
-    if (err) { return res.status(200).json({'result' : false, 'error' : 'thing not exist'}); }
+    if (err) { return res.status(200).json({'result' : false, 'error' : 'something went '}); }
+    if (!thing) {return res.status(200).json({'result' : false, 'error' : 'thing not exist'});}
 
     var likedByUserIds = thing.likedByUserIds;
     var userIdIndex = likedByUserIds.indexOf(objectId);
@@ -100,8 +101,9 @@ exports.likeOrUnlike = function (req, res) {
       likedByUserIds.splice(userIdIndex, 1);
     }
 
-    thing.save(function (err) {
-      if (err) { 
+    thing.markModified('likedByUserIds');
+    thing.save(function(err){
+        if (err) { 
         return handleError(res, err); 
       } else {
         return res.status(200).json({'result' : true});
