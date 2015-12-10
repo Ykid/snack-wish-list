@@ -23,7 +23,7 @@ angular.module('altitudeLabsApp').controller('ModalInstanceCtrl', function ($sco
     });
     var data = {
       name: $scope.snackName,
-      quantity: $scope.snackAmount.selected,
+      quantity: $scope.snackAmount,
       snackImageUrl: $scope.snackImageUrl,
       price: $scope.snackPrice,
       availableLocations: locations
