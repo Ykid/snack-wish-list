@@ -8,7 +8,7 @@ var ThingSchema = new Schema({
   snackImageUrl: String,
   price: Number,
   buyRepetition: Number,
-  noOfLikes: Number,
+  likedByUserIds: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   availableLocations: [String]
 });
 

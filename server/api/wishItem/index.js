@@ -10,6 +10,7 @@ router.get('/', auth.isAuthenticated(), controller.index);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', auth.isAuthenticated(), controller.create);
 router.put('/markAsBrought', auth.isAuthenticated(), controller.markAsBrought);
+router.put('/updateQuantity', auth.isAuthenticated(), controller.updateQuantity);
 router.put('/quantity/:id', auth.isAuthenticated(), controller.update);
 router.patch('/:id', auth.isAuthenticated(), controller.update);
 router.delete('/:id', auth.isAuthenticated(), controller.destroy);

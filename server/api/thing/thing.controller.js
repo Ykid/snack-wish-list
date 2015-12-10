@@ -16,15 +16,30 @@ var Thing = require('./thing.model');
 exports.index = function(req, res) {
   Thing.find({})
   .sort({buyRepetition: -1, noOfLikes: -1})
+  .lean()
   .exec(function(err, things){
     if(err) { return handleError(res, err); }
-    if(!thing) { return res.send(404); }
-    return res.json(thing);
+    if(!things) { return res.send(404); }
+
+    // Add key 'liked' and delete key 'likedByUserIds'
+    var thingsLength = things.length;
+    for (var i = 0; i < thingsLength; i++) {
+      var thing = things[i];
+
+      console.log(thing);
+
+      // Add key 'liked'
+      var liked = thing.likedByUserIds.indexOf(req.user._id) !== -1;
+      thing.liked = liked;
+
+      // delete key 'likedByUserIds'
+      delete thing.likedByUserIds;
+
+      things[i] = thing;
+    }
+
+    return res.json(things);
   });
-  // Thing.find(function (err, things) {
-  //   if(err) { return handleError(res, err); }
-  //   return res.json(200, things);
-  // });
 };
 
 // Get a single thing
@@ -57,6 +72,43 @@ exports.update = function(req, res) {
     });
   });
 };
+
+// Like or unlike a thing
+exports.likeOrUnlike = function (req, res) {
+  var objectId = req.body.objectId;
+  var liked = req.body.liked;
+
+  Thing.findById(objectId, function (err, thing) {
+    if (err) { return res.status(200).json({'result' : false, 'error' : 'thing not exist'}); }
+
+    var likedByUserIds = thing.likedByUserIds;
+    var userIdIndex = likedByUserIds.indexOf(objectId);
+    var alreadyLiked = userIdIndex !== -1;
+
+    // Check error
+    if (liked && alreadyLiked) {
+      return res.status(200).json({'result' : false, 'error' : 'User already liked this item'});
+    }
+    if (!liked && !alreadyLiked) {
+      return res.status(200).json({'result' : false, 'error' : 'User never like this item'});
+    }
+
+    // Like / unlike item
+    if (liked) {
+      likedByUserIds[likedByUserIds.length] = objectId;
+    } else {
+      likedByUserIds.splice(userIdIndex, 1);
+    }
+
+    thing.save(function (err) {
+      if (err) { 
+        return handleError(res, err); 
+      } else {
+        return res.status(200).json({'result' : true});
+      }
+    });
+  });
+}
 
 // Deletes a thing from the DB.
 exports.destroy = function(req, res) {
