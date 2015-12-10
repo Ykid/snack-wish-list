@@ -4,16 +4,17 @@
   form
     .form-group
       label(for='snackName') Snack Name
-      input#snackName.form-control(type='email', placeholder='Name of the snack')
+      input#snackName.form-control(type='text', placeholder='Name of the snack', ng-model="snackName")
     .form-group
       label(for='shopLocation') Shop(Space separated)
-      input#shopLocation.form-control(type='email', placeholder='The snack can be bought at...')
+      input#shopLocation.form-control(type='text', placeholder='The snack can be bought at...', ng-model="snackShops")
     .form-group
       label(for='snackPrice') Price
-      input#snackPrice.form-control(type='email', placeholder='Optional.')
+      input#snackPrice.form-control(type='text', placeholder='Optional.', ng-model="snackPrice")
     .form-group
       label(for='imageUrl') Snack Image Url
-      input#imageUrl.form-control(type='email', placeholder='Optional.')
+      input#imageUrl.form-control(type='text', placeholder='Optional.', ng-model="snackImageUrl")
+      div.preview-image(ng-style="showPreviewImage(snackImageUrl)")
     .form-group
       label(for='snackAmount') Amount&nbsp;&nbsp;
       select(name='snackAmount', ng-model='snackAmount.selected')
