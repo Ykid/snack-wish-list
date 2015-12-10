@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('altitudeLabsApp')
-  .controller('LeaderBoardCtrl', function ($scope, $http, $window, $uibModal, $log, Modal, snackItemService) {
+  .controller('LeaderBoardCtrl', function ($scope, $http, $window, $uibModal, $log, Modal, snackItemService, snackShoppingEntryService) {
     $scope.filterName = '';
     // var sample = [{
     //   _id: '112',
@@ -36,7 +36,7 @@ angular.module('altitudeLabsApp')
     // }];
     $scope.openAlert = Modal.confirm.showError();
     $scope.snackList = [];
-    snackItemService.getItems().then(function (items) {
+    snackShoppingEntryService.getItems().then(function (items) {
       $scope.snackList = items;
     }, function (errorMsg) {
       $scope.openAlert(errorMsg);
