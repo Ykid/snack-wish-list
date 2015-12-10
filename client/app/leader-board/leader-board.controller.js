@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('altitudeLabsApp')
-  .controller('LeaderBoardCtrl', function ($scope, $http, $window) {
+  .controller('LeaderBoardCtrl', function ($scope, $http, $window, $uibModal, $log) {
     // $scope.snackList = [];
     $scope.filterName = '';
     var sample = [{
@@ -139,4 +139,26 @@ angular.module('altitudeLabsApp')
         'background-position': '50% 50%'
       };
     }
+    $scope.items = ['item1', 'item2', 'item3'];
+    $scope.open = function (size, selectedWishItem) {
+
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/partial/create-wish-item/add-snack-wish.html',
+        controller: 'ModalInstanceCtrl',
+        size: size,
+        resolve: {
+          selectedWishItem: function () {
+            return selectedWishItem;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    };
+
   });

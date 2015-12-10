@@ -1,0 +1,29 @@
+.modal-header
+  h3.modal-title I want to have...
+.modal-body
+  form
+    .form-group
+      label(for='snackName') Snack Name
+      input#snackName.form-control(type='email', placeholder='Name of the snack')
+    .form-group
+      label(for='shopLocation') Shop(Space separated)
+      input#shopLocation.form-control(type='email', placeholder='The snack can be bought at...')
+    .form-group
+      label(for='snackPrice') Price
+      input#snackPrice.form-control(type='email', placeholder='Optional.')
+    .form-group
+      label(for='imageUrl') Snack Image Url
+      input#imageUrl.form-control(type='email', placeholder='Optional.')
+    .form-group
+      label(for='snackAmount') Amount&nbsp;&nbsp;
+      select(name='snackAmount', ng-model='snackAmount.selected')
+        option(value='') --Please select--
+        option(value='1') 1
+        option(value='2') 2
+        option(value='3') 3
+        option(value='4') 4
+        option(value='5') 5
+
+.modal-footer
+  button.btn.btn-success(type='button', ng-click='ok()') Add!
+  button.btn.btn-warning(type='button', ng-click='cancel()') Cancel
