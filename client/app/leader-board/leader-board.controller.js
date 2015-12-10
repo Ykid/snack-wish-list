@@ -36,7 +36,7 @@ angular.module('altitudeLabsApp')
     // }];
     $scope.openAlert = Modal.confirm.showError();
     $scope.snackList = [];
-    snackShoppingEntryService.getItems().then(function (items) {
+    snackItemService.getItems().then(function (items) {
       $scope.snackList = items;
     }, function (errorMsg) {
       $scope.openAlert(errorMsg);

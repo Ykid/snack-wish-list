@@ -1,42 +1,44 @@
 'use strict';
 
 angular.module('altitudeLabsApp')
-  .controller('MainCtrl', function ($scope, $http, $window, $location) {
-    // $scope.snackList = [];
+  .controller('MainCtrl', function ($scope, $http, $window, $location, $uibModal, $log, snackItemService, snackShoppingEntryService, Modal) {
     $scope.filterName = '';
-    var sample = [{
-      _id: '112',
-      snackName:'Snacks Name',
-      requestAmount: 2,
-      snackImageUrl: 'https://www.geppettogroup.com/wp-content/uploads/2011/05/Scooby-Snacks1.jpg',
-      likes: 5,
-      price: 12,
-      requester: 'Leonard',
-      availableLocaltions: ['park and shop', 'sasa', 'joyo', 'park and shop', 'park and shop', 'park and shop'],
-      requestedTimes: 1
-    }, {
-      _id: '113',
-      snackName:'Snacks 2 Name',
-      requestAmount: 3,
-      snackImageUrl: 'http://www.irvineparkrailroad.com/images/heroshots/12134826533.jpg',
-      likes: 2,
-      price: 24,
-      requester: 'Anthony',
-      availableLocaltions: ['711'],
-      requestedTimes: 20
-    }, {
-      _id: '111',
-      snackName:'Snacks 3 Name',
-      requestAmount: 4,
-      snackImageUrl: 'http://www.firstuccdc.org/wp-content/uploads/2013/07/snacks.png',
-      likes: 1,
-      price: 13,
-      requester: 'Andrianto',
-      availableLocaltions: ['759'],
-      requestedTimes: 3
-    }];
-    $scope.snackList = sample;
+    $scope.snackList = [];
+    var showError = Modal.confirm.showError();
+    var init = function() {
+      snackShoppingEntryService.getEntries('outstanding').then(
+        function (successResponse) {
+          $scope.snackList = successResponse;
+        }, function (errorMsg) {
+          showError(errorMsg);
+        });
+    };
+    init();
 
+    $scope.updateLike = function(snackItem) {
+      snackItem.isDisabled = true;
+      var data = {
+        objectId: snackItem.itemId,
+        liked: !snackItem.isLiked
+      }
+      snackItemService.likeOrUnlike(data).then(
+        function (successResponse) {
+          snackItem.isLiked = !snackItem.isLiked;
+          snackItem.isDisabled = false;
+          if (snackItem.isLiked === true) {
+            snackItem.likes = parseInt(snackItem.likes) + 1 ;
+          } else {
+            snackItem.likes = parseInt(snackItem.likes) - 1 ;
+          }
+        }, function (errorResponse) {
+          snackItem.isDisabled = false;
+          if (errorResponse && errorResponse.data && typeof errorResponse.data.message === 'string'){
+            showError(errorResponse.data.message);
+          } else {
+            showError(JSON.stringify(errorResponse.data));
+          }
+        });
+    };
     //change the display of the button according to the
     //like status
     $scope.checkLikeStatus = function (snackItem) {
@@ -107,18 +109,6 @@ angular.module('altitudeLabsApp')
       return snackItem._id;
     }
 
-    $scope.addThing = function() {
-      if($scope.newThing === '') {
-        return;
-      }
-      $http.post('/api/things', { name: $scope.newThing });
-      $scope.newThing = '';
-    };
-
-    $scope.deleteThing = function(thing) {
-      $http.delete('/api/things/' + thing._id);
-    };
-
     $scope.getLocations = function (snackItem) {
       var i,
           location = '';
@@ -142,5 +132,27 @@ angular.module('altitudeLabsApp')
         'background-size': 'cover',
         'background-position': '50% 50%'
       };
-    }
+    };
+
+    $scope.buyItems = function() {
+      var i, itemsToBeBought = [];
+      for (i = 0; i < $scope.snackList.length; i++) {
+        if ($scope.snackList[i].isMarked) {
+          itemsToBeBought.push($scope.snackList[i]._id);
+        }
+      }
+
+      snackShoppingEntryService.buyItems(itemsToBeBought).then(
+        function (successResponse) {
+          init();
+        },
+        function (errorResponse) {
+          if (errorResponse && errorResponse.data && typeof errorResponse.data.message === 'string') {
+            showError(errorResponse.data.message);
+          } else {
+            showError(JSON.stringify(errorResponse.data));
+          }
+        });
+    };
+
   });
