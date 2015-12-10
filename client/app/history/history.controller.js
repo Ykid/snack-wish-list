@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('altitudeLabsApp')
-  .controller('HistoryCtrl', function ($scope, $http, $window) {
-    // $scope.snackList = [];
+  .controller('HistoryCtrl', function ($scope, $http, $window, $uibModal, $log, snackItemService) {
     $scope.filterName = '';
     var sample = [{
       _id: '112',
@@ -47,76 +46,8 @@ angular.module('altitudeLabsApp')
       }
     };
 
-    //TBD: send to the server to update the item status
-    $scope.updateLikeStatus = function (snackItem) {
-      if (snackItem.isLiked) {
-        $window.alert("unlike it");
-      } else {
-        $window.alert("like it");
-      }
-      snackItem.isLiked = !snackItem.isLiked;
-    };
-
-    $scope.updateMarkStatus = function (snackItem) {
-      if (snackItem.isMarked) {
-        snackItem.isMarked = !snackItem.isMarked;
-      } else {
-        snackItem.isMarked = true;
-      }
-      return;
-    }
-
-    $scope.checkMarkedStatus = function (snackItem) {
-      if (snackItem.isMarked) {
-        return 'deselect'
-      } else {
-        return 'select';
-      }
-    }
-
-    $scope.addOne = function(snackItem) {
-      snackItem.requestAmount = snackItem.requestAmount + 1;
-    }
-
-    $scope.minusOne = function(snackItem) {
-      snackItem.requestAmount = snackItem.requestAmount - 1;
-    }
-
-    $scope.getSubtotal = function() {
-      var i,
-          sum = 0;
-      for (i = 0; i < $scope.snackList.length; i++) {
-          if ($scope.snackList[i].price && $scope.snackList[i].isMarked) {
-            sum = sum + $scope.snackList[i].price;
-          }
-      }
-      return sum + '';
-    }
-
-    $scope.showSummary = function() {
-      var i;
-      for (i = 0; i < $scope.snackList.length; i++) {
-        if ($scope.snackList[i].isMarked) {
-          return true;
-        }
-      }
-      return false;
-    }
-
     $scope.myTracking = function(snackItem) {
       return snackItem._id;
-    }
-
-    $scope.addThing = function() {
-      if($scope.newThing === '') {
-        return;
-      }
-      $http.post('/api/things', { name: $scope.newThing });
-      $scope.newThing = '';
-    };
-
-    $scope.deleteThing = function(thing) {
-      $http.delete('/api/things/' + thing._id);
     };
 
     $scope.getLocations = function (snackItem) {
@@ -129,7 +60,7 @@ angular.module('altitudeLabsApp')
         }
       }
       return location;
-    }
+    };
 
     $scope.getBackgroundImage = function(imageUrl) {
       return {
@@ -138,5 +69,27 @@ angular.module('altitudeLabsApp')
         'background-size': 'cover',
         'background-position': '50% 50%'
       };
-    }
+    };
+
+    $scope.open = function (size, selectedWishItem) {
+
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/partial/create-wish-item/add-snack-wish.html',
+        controller: 'ModalInstanceCtrl',
+        size: size,
+        resolve: {
+          selectedWishItem: function () {
+            return selectedWishItem;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    };
+
   });
