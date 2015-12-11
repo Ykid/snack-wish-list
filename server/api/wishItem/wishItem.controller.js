@@ -64,6 +64,8 @@ function handleGetWishItems(err, wishItems, req, res) {
 
     jsonItems[i] =
     {
+      "_id": wishItem._id,
+      "itemId": thing._id,
       "name": thing.name,
       "quantity": wishItem.requireQuantity,
       "hasBrought": wishItem.hasBrought,

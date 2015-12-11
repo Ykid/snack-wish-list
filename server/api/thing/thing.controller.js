@@ -23,22 +23,27 @@ exports.index = function(req, res) {
 
     // Add key 'liked' and delete key 'likedByUserIds'
     var thingsLength = things.length;
+    var newThings = [];
     for (var i = 0; i < thingsLength; i++) {
       var thing = things[i];
-
-      console.log(thing);
-
       // Add key 'liked'
-      var liked = thing.likedByUserIds.indexOf(req.user._id) !== -1;
+      var liked = false;
+      if (thing.likedByUserIds) {
+        for (var j = 0; j < thing.likedByUserIds.length; j++) {
+          if (thing.likedByUserIds[j].toString() === req.user._id.toString()) {
+            liked = true;
+            break;
+          }
+        }
+        thing.likes = thing.likedByUserIds.length;
+      }
       thing.liked = liked;
-
       // delete key 'likedByUserIds'
       delete thing.likedByUserIds;
-
-      things[i] = thing;
+      newThings.push(thing);
     }
 
-    return res.json(things);
+    return res.json(newThings);
   });
 };
 
@@ -79,8 +84,8 @@ exports.likeOrUnlike = function (req, res) {
   var liked = req.body.liked;
 
   Thing.findById(objectId, function (err, thing) {
-    if (err) { return res.status(200).json({'result' : false, 'error' : 'something went '}); }
-    if (!thing) {return res.status(200).json({'result' : false, 'error' : 'thing not exist'});}
+    if (err) { return res.status(500).json({'result' : false, 'error' : 'something went wrong'}); }
+    if (!thing) {return res.status(400).json({'result' : false, 'error' : 'thing not exist'});}
 
     var likedByUserIds = thing.likedByUserIds;
     var userIdIndex = likedByUserIds.indexOf(objectId);
@@ -88,10 +93,10 @@ exports.likeOrUnlike = function (req, res) {
 
     // Check error
     if (liked && alreadyLiked) {
-      return res.status(200).json({'result' : false, 'error' : 'User already liked this item'});
+      return res.status(422).json({'result' : false, 'error' : 'User already liked this item'});
     }
     if (!liked && !alreadyLiked) {
-      return res.status(200).json({'result' : false, 'error' : 'User never like this item'});
+      return res.status(422).json({'result' : false, 'error' : 'User never like this item'});
     }
 
     // Like / unlike item
@@ -103,8 +108,8 @@ exports.likeOrUnlike = function (req, res) {
 
     thing.markModified('likedByUserIds');
     thing.save(function(err){
-        if (err) { 
-        return handleError(res, err); 
+        if (err) {
+        return handleError(res, err);
       } else {
         return res.status(200).json({'result' : true});
       }
