@@ -13,6 +13,36 @@ angular.module('altitudeLabsApp')
           showError(errorMsg);
         });
     };
+
+    var updateAmount = function(snackItem, option) {
+      snackItem.isDisabled = true;
+      var isAdd = option === 'add';
+      var data = {
+        objectId: snackItem._id,
+        addOrMinus: option
+      };
+      var difference = isAdd ? 1 : -1;
+      snackShoppingEntryService.updateAmount(data).then(
+        function (successResponse) {
+          if ((typeof snackItem.requestAmount) === 'string') {
+            snackItem.requestAmount = parseInt(snackItem.requestAmount) + difference;
+          } else if ((typeof snackItem.requestAmount) === 'number') {
+            snackItem.requestAmount = snackItem.requestAmount + difference;
+          }
+          if ( snackItem.requestAmount <= 0) {
+            init();
+          }
+          snackItem.isDisabled = false;
+        },
+        function (errorResponse) {
+          snackItem.isDisabled = false;
+          if (errorResponse && errorResponse.data && typeof errorResponse.data.message === 'string'){
+            showError(errorResponse.data.message);
+          } else {
+            showError(JSON.stringify(errorResponse.data));
+          }
+        });
+    }
     init();
 
     $scope.updateLike = function(snackItem) {
@@ -77,11 +107,11 @@ angular.module('altitudeLabsApp')
     }
 
     $scope.addOne = function(snackItem) {
-      snackItem.requestAmount = snackItem.requestAmount + 1;
+      updateAmount(snackItem, 'add');
     }
 
     $scope.minusOne = function(snackItem) {
-      snackItem.requestAmount = snackItem.requestAmount - 1;
+      updateAmount(snackItem, 'minus');
     }
 
     $scope.getSubtotal = function() {
