@@ -119,7 +119,7 @@ angular.module('altitudeLabsApp')
           sum = 0;
       for (i = 0; i < $scope.snackList.length; i++) {
           if ($scope.snackList[i].price && $scope.snackList[i].isMarked) {
-            sum = sum + $scope.snackList[i].price;
+            sum = sum + $scope.snackList[i].price * $scope.snackList[i].requestAmount;
           }
       }
       return sum + '';
