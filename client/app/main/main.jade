@@ -21,9 +21,9 @@ header#banner.hero-unit
             div
               div
                 | Amount:&nbsp;&nbsp;
-                button.snack-update.btn.btn-default.btn-xs(ng-click="minusOne(snackItem)") -
+                button.snack-update.btn.btn-default.btn-xs(ng-disabled="{{snackItem.isDisabled}}" ng-click="minusOne(snackItem)") -
                 | {{' ' + snackItem.requestAmount + ' '}}
-                button.snack-update.btn.btn-default.btn-xs(ng-click="addOne(snackItem)") +
+                button.snack-update.btn.btn-default.btn-xs(ng-disabled="{{snackItem.isDisabled}}" ng-click="addOne(snackItem)") +
             div.snack-location Shop: {{getLocations(snackItem)}}
             div Price: {{snackItem.price}} HKD
             div Requester: {{snackItem.requester}}

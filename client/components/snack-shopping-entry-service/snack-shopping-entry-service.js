@@ -48,5 +48,9 @@ angular.module('altitudeLabsApp')
       return $http.put('/api/wishItems/markAsBrought', data);
     };
 
+    snackShoppingEntryRequester.updateAmount = function (data) {
+      return $http.put('/api/wishItems/updateQuantity', data);
+    };
+
     return snackShoppingEntryRequester;
   });
