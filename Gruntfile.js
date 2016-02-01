@@ -196,7 +196,7 @@ module.exports = function (grunt) {
         options: {
           'web-host': 'localhost',
           "preload": false,
-          // 'save-live-edit': true,
+          'save-live-edit': true,
           'hidden': ['node_modules', 'bower_components'],
         }
       }
