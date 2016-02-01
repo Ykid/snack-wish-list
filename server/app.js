@@ -18,6 +18,7 @@ mongoose.connect(config.mongo.uri, config.mongo.options);
 // if(config.seedDB) { require('./config/seed'); }
 
 // Setup server
+
 var app = express();
 var server = require('http').createServer(app);
 require('./config/express')(app);
@@ -29,4 +30,4 @@ server.listen(config.port, config.ip, function () {
 });
 
 // Expose app
-exports = module.exports = app;
+exports = module.exports = app;
