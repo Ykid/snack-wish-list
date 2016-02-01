@@ -14,37 +14,38 @@ var Thing = require('./thing.model');
 
 // Get list of things
 exports.index = function(req, res) {
-  Thing.find({})
-  .sort({buyRepetition: -1, noOfLikes: -1})
-  .lean()
-  .exec(function(err, things){
-    if(err) { return handleError(res, err); }
-    if(!things) { return res.send(404); }
+  Thing.
+    find({}).
+    sort({buyRepetition: -1, noOfLikes: -1}).
+    lean().
+    exec(function (err, things){
+      if(err) { return handleError(res, err); }
+      if(!things) { return res.send(404); }
 
-    // Add key 'liked' and delete key 'likedByUserIds'
-    var thingsLength = things.length;
-    var newThings = [];
-    for (var i = 0; i < thingsLength; i++) {
-      var thing = things[i];
-      // Add key 'liked'
-      var liked = false;
-      if (thing.likedByUserIds) {
-        for (var j = 0; j < thing.likedByUserIds.length; j++) {
-          if (thing.likedByUserIds[j].toString() === req.user._id.toString()) {
-            liked = true;
-            break;
+      // Add key 'liked' and delete key 'likedByUserIds'
+      var thingsLength = things.length;
+      var newThings = [];
+      for (var i = 0; i < thingsLength; i++) {
+        var thing = things[i];
+        // Add key 'liked'
+        var liked = false;
+        if (thing.likedByUserIds) {
+          for (var j = 0; j < thing.likedByUserIds.length; j++) {
+            if (thing.likedByUserIds[j].toString() === req.user._id.toString()) {
+              liked = true;
+              break;
+            }
           }
+          thing.likes = thing.likedByUserIds.length;
         }
-        thing.likes = thing.likedByUserIds.length;
+        thing.liked = liked;
+        // delete key 'likedByUserIds'
+        delete thing.likedByUserIds;
+        newThings.push(thing);
       }
-      thing.liked = liked;
-      // delete key 'likedByUserIds'
-      delete thing.likedByUserIds;
-      newThings.push(thing);
-    }
 
-    return res.json(newThings);
-  });
+      return res.json(newThings);
+    });
 };
 
 // Get a single thing
@@ -88,8 +89,15 @@ exports.likeOrUnlike = function (req, res) {
     if (!thing) {return res.status(400).json({'result' : false, 'error' : 'thing not exist'});}
 
     var likedByUserIds = thing.likedByUserIds;
-    var userIdIndex = likedByUserIds.indexOf(objectId);
-    var alreadyLiked = userIdIndex !== -1;
+
+    var userIdIndex = 0;
+    var alreadyLiked = false;
+    for (userIdIndex = 0; userIdIndex < likedByUserIds.length; userIdIndex++) {
+      if (likedByUserIds[userIdIndex].toString() === req.user._id.toString()) {
+        alreadyLiked = true;
+        break;
+      }
+    }
 
     // Check error
     if (liked && alreadyLiked) {
@@ -101,7 +109,7 @@ exports.likeOrUnlike = function (req, res) {
 
     // Like / unlike item
     if (liked) {
-      likedByUserIds[likedByUserIds.length] = objectId;
+      likedByUserIds[likedByUserIds.length] = req.user._id;
     } else {
       likedByUserIds.splice(userIdIndex, 1);
     }
