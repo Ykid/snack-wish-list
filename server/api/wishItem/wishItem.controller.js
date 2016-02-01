@@ -70,6 +70,7 @@ function handleGetWishItems(err, wishItems, req, res) {
       "quantity": wishItem.requireQuantity,
       "hasBrought": wishItem.hasBrought,
       "buyRepetition": thing.buyRepetition,
+      "likes": thing.likedByUserIds.length || 0,
       "liked": liked,
       "snackImageUrl": thing.snackImageUrl,
       "price": thing.price,
@@ -166,10 +167,27 @@ exports.markAsBrought = function(req, res) {
   WishItem.update(updateData,
     { hasBrought: true },
     { multi: true },
-    function (err, raw) {
-      if(err) { return handleError(res, err); }
-      return res.status(200).json({});
+    function (err, noOfWishItemsUpdated) {
+      WishItem.
+        find(updateData).
+        select('thing -_id').
+        lean().
+        exec(function(err, items) {
+          if(err) { console.log('err', err); }
+          var query = {_id: {$in:[]}};
+          for (var i = 0; i < items.length; i++) {
+            query._id.$in.push(items[i].thing.toString());
+          }
+          Thing.update(query,
+            { $inc: {buyRepetition : 1}},
+            { multi: true },
+            function (err, noOfItemsUpdated) {
+              if(err) { return handleError(res, err); }
+              return res.status(200).json({});
+          });
+        });
   });
+
 
   // WishItem.findByIdAndUpdate(objectId, updateData, function(err, wishItem){
   //   if (err) { return handleError(res, err); }
@@ -257,3 +275,4 @@ exports.destroy = function(req, res) {
 function handleError(res, err) {
   return res.send(500, err);
 }
+
