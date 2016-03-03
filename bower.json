@@ -22,7 +22,7 @@
     "angular-scenario": ">=1.2.*"
   },
   "resolutions": {
-    "angular-bootstrap": "~0.14.3",
+    "angular-bootstrap": "~1.2.2",
     "angular": ">= 1.0.8"
   }
 }
