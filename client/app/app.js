@@ -5,6 +5,7 @@ angular.module('altitudeLabsApp', [
   'ngResource',
   'ngSanitize',
   'ui.router',
+  'ngAnimate',
   'ui.bootstrap'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
