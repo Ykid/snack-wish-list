@@ -1,3 +1,4 @@
+'use strict';
 angular.module('altitudeLabsApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, selectedWishItem, snackShoppingEntryService, Modal) {
 
   $scope.wishItem = selectedWishItem || [];
@@ -17,7 +18,7 @@ angular.module('altitudeLabsApp').controller('ModalInstanceCtrl', function ($sco
   };
 
   $scope.createNewItem = function() {
-    locations = $scope.snackShops.split(',');
+    var locations = $scope.snackShops.split(',');
     locations.forEach(function (val, index) {
       locations[index] = val.trim();
     });
