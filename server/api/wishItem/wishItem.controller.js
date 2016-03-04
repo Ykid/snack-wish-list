@@ -20,7 +20,7 @@ exports.index = function(req, res) {
   // Request db
   if (listType === "outstanding") {
     WishItem.find({hasBrought: false}).
-    populate('requestUsers[0].userId').
+    populate('requestUsers.userId').
     populate('thing').
     exec(function (err, docs) {
       handleGetWishItems(err, docs, req, res);
@@ -28,7 +28,7 @@ exports.index = function(req, res) {
 
   } else if (listType === "history") {
     WishItem.find({hasBrought: true}).
-    populate('requestUsers[0].userId').
+    populate('requestUsers.userId').
     populate('thing').
     exec(function (err, docs) {
       handleGetWishItems(err, docs, req, res);
@@ -36,7 +36,7 @@ exports.index = function(req, res) {
 
   } else if (listType === "all") {
     WishItem.find({}).
-    populate('requestUsers[0].userId').
+    populate('requestUsers.userId').
     populate('thing').
     exec(function (err, docs) {
       handleGetWishItems(err, docs, req, res);
@@ -61,7 +61,6 @@ function handleGetWishItems(err, wishItems, req, res) {
 
     var likedByUserIds = thing.likedByUserIds;
     var liked = likedByUserIds.indexOf(req.user._id) !== -1;
-
     jsonItems[i] =
     {
       "_id": wishItem._id,
