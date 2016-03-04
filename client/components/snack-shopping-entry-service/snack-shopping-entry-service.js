@@ -16,7 +16,7 @@ angular.module('altitudeLabsApp')
               snackImageUrl: successResponse.data.wishItems[i].snackImageUrl || 'https://git.reviewboard.kde.org/media/uploaded/files/2015/07/18/a70d8ab6-1bbf-4dcc-b11f-524c2f56b14a__picture_default_cover.jpg',
               itemId: successResponse.data.wishItems[i].itemId || 'noItemId',
               requestAmount: (successResponse.data.wishItems[i].quantity && parseInt(successResponse.data.wishItems[i].quantity))|| 0,
-              requester : successResponse.data.wishItems[i].requester || 'not available',
+              requester : successResponse.data.wishItems[i].requesterName || 'not available',
               likes: successResponse.data.wishItems[i].likes || 0,
               price: successResponse.data.wishItems[i].price || 0,
               availableLocaltions: successResponse.data.wishItems[i].availableLocations || ['not available'],
