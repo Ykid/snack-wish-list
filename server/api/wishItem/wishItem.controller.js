@@ -199,7 +199,6 @@ exports.markAsBrought = function(req, res) {
 exports.updateQuantity = function(req, res) {
   var objectId = req.body.objectId;
   var addOrMinus = req.body.addOrMinus;
-
   WishItem.findById(objectId, function (err, wishItem) {
     if(err) { return handleError(res, err); }
     if(!wishItem) { return res.send(404); }
@@ -207,29 +206,74 @@ exports.updateQuantity = function(req, res) {
     // Get new quantity
     var quantity = wishItem.requireQuantity;
     if (addOrMinus === "add") {
-      quantity++;
+      addOneItem(req.user, wishItem, res);
     } else {
-      quantity--;
+      minusOneItem(req.user, wishItem, res);
     }
 
-    if (quantity <= 0) {
-      // Delete item
+  });
+
+//userId is objectId
+function userHasOrderItem(wishItem, userId) {
+  var entry,i;
+  for (i=0; i<wishItem.requestUsers.length; i++) {
+    entry = wishItem.requestUsers[i];
+    if (entry.userId.toString() === userId.toString()) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+function addOneItem(user, wishItem, res) {
+  var userIndex = userHasOrderItem(wishItem, user._id);
+  if (userIndex !== -1) {
+    wishItem.requestUsers[userIndex].requireQuantity += 1;
+    wishItem.requireQuantity += 1;
+    wishItem.markModified('requestUsers');
+  } else {
+    wishItem.requestUsers.push({
+      userId: user._id,
+      requireQuantity: 1
+    });
+    wishItem.markModified('requestUsers');
+    wishItem.requireQuantity += 1;
+  }
+
+  wishItem.save(function (err) {
+    if(err) { return handleError(res, err); }
+    return res.status(200).json({});
+  });
+}
+
+function minusOneItem(user, wishItem, res) {
+  var userIndex = userHasOrderItem(wishItem, user._id);
+
+  if (userIndex !== -1) {
+    if (wishItem.requestUsers[userIndex].requireQuantity <= 1) {
+      wishItem.requestUsers.splice(userIndex, 1);
+    } else {
+      wishItem.requestUsers[userIndex].requireQuantity -= 1;
+    }
+    wishItem.requireQuantity -= 1;
+    wishItem.markModified('requestUsers');
+
+    if (wishItem.requireQuantity <= 0) {//no more people want this item, delete
       wishItem.remove(function (err, doc) {
         if(err) { return handleError(res, err); }
         return res.status(200).json({});
       });
     } else {
-      // Update quanity of item
-      wishItem.requireQuantity = quantity;
       wishItem.save(function (err) {
         if(err) { return handleError(res, err); }
         return res.status(200).json({});
       });
     }
 
-
-  });
-
+  } else {
+    res.status(400).json({'message': 'You did not order any of these so you cannot reduce the quantity'});
+  }
+}
   // Delete item
   // if (quantity <= 0) {
   //   WishItem.findByIdAndRemove(objectId, function (err, doc){
