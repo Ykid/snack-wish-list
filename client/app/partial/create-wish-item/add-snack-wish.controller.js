@@ -31,7 +31,7 @@ angular.module('altitudeLabsApp').controller('ModalInstanceCtrl', function ($sco
       name: $scope.snackName,
       quantity: $scope.snackAmount,
       snackImageUrl: $scope.snackImageUrl,
-      price: $scope.snackPrice,
+      price: $scope.snackPrice || 0,
       availableLocations: locations
     }
 
