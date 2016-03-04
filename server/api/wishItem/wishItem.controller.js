@@ -59,7 +59,7 @@ function handleGetWishItems(err, wishItems, req, res) {
     var wishItem = wishItems[i];
     var thing = wishItem.thing;
 
-    var likedByUserIds = thing.likedByUserIds;
+    var likedByUserIds = (thing && thing.likedByUserIds) || []; //default value
     var liked = likedByUserIds.indexOf(req.user._id) !== -1;
     jsonItems[i] =
     {
@@ -73,7 +73,7 @@ function handleGetWishItems(err, wishItems, req, res) {
       "liked": liked,
       "snackImageUrl": thing.snackImageUrl,
       "price": thing.price,
-      "requesterName": wishItem.requestUsers[0].userId.name,
+      "requesterName": wishItem.requestUsers[0].userId && wishItem.requestUsers[0].userId.name,
       "availableLocations": thing.availableLocations
     };
   } // End of for loop
