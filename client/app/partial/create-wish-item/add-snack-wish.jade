@@ -1,25 +1,24 @@
 .modal-header
   h3.modal-title I want to have...
 .modal-body
-  form
+  form(name="userForm" ng-submit="createNewItem()")
     .form-group
       label(for='snackName') Snack Name
-      input#snackName.form-control(type='text', placeholder='Name of the snack', ng-model="snackName")
+      input#snackName.form-control(type='text', placeholder='Name of the snack', ng-model="snackName", required)
     .form-group
       label(for='shopLocation') Shop(comma separated)
-      input#shopLocation.form-control(type='text', placeholder='The snack can be bought at...', ng-model="snackShops")
+      input#shopLocation.form-control(type='text', placeholder='The snack can be bought at...', ng-model="snackShops", required)
     .form-group
       label(for='snackPrice') Price
-      input#snackPrice.form-control(type='text', placeholder='Optional.', ng-model="snackPrice")
+      input#snackPrice.form-control(type='number', min='0', placeholder='Optional.', ng-model="snackPrice")
     .form-group
       label(for='snackAmount') Amount&nbsp;&nbsp;
-      input#snackAmout.form-control(type='text', placeholder='Required', ng-model="snackAmount")
+      input#snackAmout.form-control(type='number', min='1', step='1', placeholder='Required', ng-model="snackAmount", required)
     .form-group
       label(for='imageUrl') Snack Image Url
-      input#imageUrl.form-control(type='text', placeholder='Required.', ng-model="snackImageUrl")
+      input#imageUrl.form-control(type='text', placeholder='Required.', ng-model="snackImageUrl", required)
       div.preview-image(ng-style="showPreviewImage(snackImageUrl)")
-
-
+    .form-group.form-align-right
+      button.btn.btn-success(type='submit') Add!
+      button.btn.btn-warning(type='button', ng-click='cancel()') Cancel
 .modal-footer
-  button.btn.btn-success(type='button', ng-click='createNewItem()') Add!
-  button.btn.btn-warning(type='button', ng-click='cancel()') Cancel
