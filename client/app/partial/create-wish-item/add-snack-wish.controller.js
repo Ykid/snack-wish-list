@@ -9,16 +9,21 @@ angular.module('altitudeLabsApp').controller('ModalInstanceCtrl', function ($sco
   $scope.snackPrice = $scope.wishItem && $scope.wishItem.price;
   var showError = Modal.confirm.showError();
   $scope.showPreviewImage = function(snackImageUrl) {
-    return {
-      'background-image' : 'url(' + snackImageUrl + ')',
-      'background-repeat': 'no-repeat',
-      'background-size': 'cover',
-      'background-position': '50% 50%'
-    };
+    if (typeof snackImageUrl === 'string' &&  snackImageUrl !== '') {
+      return {
+        'background-image' : 'url(' + snackImageUrl + ')',
+        'background-repeat': 'no-repeat',
+        'background-size': 'cover',
+        'background-position': '50% 50%',
+        'padding-bottom': '37.5%',
+      };
+    } else {
+      return {};
+    }
   };
 
   $scope.createNewItem = function() {
-    var locations = $scope.snackShops.split(',');
+    var locations = typeof $scope.snackShops === 'string' ? $scope.snackShops.split(',') : ['not available'];
     locations.forEach(function (val, index) {
       locations[index] = val.trim();
     });
