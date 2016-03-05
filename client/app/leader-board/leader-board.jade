@@ -1,0 +1,32 @@
+div(ng-include='"components/navbar/navbar.html"')
+
+header#banner.hero-unit
+  .container
+    h1 What we like best
+
+.wish-list-body
+  .container
+    .row
+      .col-lg-12
+        h1.page-header Leader Board:
+        .form-group.leader-board-center-align
+          div.leader-board-container
+            input.form-control.leader-board-bar(type='text', ng-model='filterName' placeholder='search by snack name')
+          div.leader-board-container
+            button.leader-board-button.btn.btn-success(ng-click="open('lg')") I want something not in the history!
+        .col-md-4.col-lg-4.col-sm-6(ng-repeat='snackItem in snackList | wishListFilter:filterName track by myTracking(snackItem)')
+          div.snack-image(ng-style="getBackgroundImage(snackItem.snackImageUrl)")
+          div.snack-info
+            div.snack-name {{snackItem.snackName}}
+            div Likes: {{snackItem.likes}}
+            div Requested: {{snackItem.requestedTimes}} times
+            div.snack-buttons
+              button.snack-like-button.btn.btn-default.btn-xs(ng-disabled="{{snackItem.isDisabled}}" ng-click="updateLike(snackItem)") {{checkLikeStatus(snackItem)}}
+              button.snack-like-button.btn.btn-default.btn-xs(ng-click="open('lg', snackItem)") order again
+          div.snack-clear-float
+
+  .wish-list-footer
+    footer.footer
+      .container
+        p
+          | Snacks Wish List Beta

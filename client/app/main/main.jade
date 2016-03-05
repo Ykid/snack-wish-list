@@ -2,24 +2,50 @@ div(ng-include='"components/navbar/navbar.html"')
 
 header#banner.hero-unit
   .container
-    h1 'Allo, 'Allo!
-    p.lead Kick-start your next web app with Angular Fullstack
-    img(src='assets/images/yeoman.png', alt='I\'m Yeoman')
+    h1 I want snacks!
 
-.container
-  .row
-    .col-lg-12
-      h1.page-header Features:
-      ul.nav.nav-tabs.nav-stacked.col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in awesomeThings')
-        li
-          a(href='#', tooltip='{{thing.info}}')
-            | {{thing.name}}
-
-footer.footer
+.wish-list-body
   .container
-    p
-      | Angular Fullstack v2.0.13
-      = ' | '
-      a(href='https://twitter.com/tyhenkel') @tyhenkel
-      = ' | '
-      a(href='https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open') Issues
+    .row
+      .col-lg-12
+        h1.page-header Wish List:
+        .form-group.leader-board-center-align
+          div.leader-board-container
+            input.form-control.leader-board-bar(type='text', ng-model='filterName' placeholder='filter by shop location')
+          div.leader-board-container
+            button.leader-board-button.btn.btn-success(ng-click="goToLeaderBoard()") Place my order!
+        .col-md-4.col-lg-4.col-sm-6(ng-repeat='snackItem in snackList | wishListFilter:filterName:"location" track by myTracking(snackItem)')
+          div.snack-image(ng-style="getBackgroundImage(snackItem.snackImageUrl)")
+          div.snack-info
+            div.snack-name {{snackItem.snackName}}
+            div
+              div
+                | Amount:&nbsp;&nbsp;
+                button.snack-update.btn.btn-default.btn-xs(ng-disabled="{{snackItem.isDisabled}}" ng-click="minusOne(snackItem)") -
+                | {{' ' + snackItem.requestAmount + ' '}}
+                button.snack-update.btn.btn-default.btn-xs(ng-disabled="{{snackItem.isDisabled}}" ng-click="addOne(snackItem)") +
+            div.snack-location Shop: {{getLocations(snackItem)}}
+            div Price: {{snackItem.price}} HKD
+            div Requester: {{snackItem.requester}}
+            div Likes: {{snackItem.likes}}
+            div Requested: {{snackItem.requestedTimes}} times
+            div.snack-buttons
+              button.snack-like-button.btn.btn-default.btn-xs(ng-disabled="{{snackItem.isDisabled}}" ng-click="updateLike(snackItem)") {{checkLikeStatus(snackItem)}}
+              button.snack-like-button.btn.btn-default.btn-xs(ng-click="updateMarkStatus(snackItem)") {{checkMarkedStatus(snackItem)}}
+          div.snack-clear-float
+
+            //- a(href='#', tooltip='{{snackItem.info}}')
+            //-   | {{snackItem.name}}
+  .wish-list-footer
+    footer.footer
+      .container
+        p
+          | Snacks Wish List Beta
+          //- = ' | '
+          //- a(href='https://twitter.com/tyhenkel') @tyhenkel
+          //- = ' | '
+          //- a(href='https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open') Issues
+  .wish-list-summary(ng-show="showSummary()")
+    div Subtotal: {{getSubtotal()}} HKD
+    div
+      button.btn.btn-default(ng-click="buyItems()") I bought them!
