@@ -28,11 +28,11 @@ angular.module('altitudeLabsApp').controller('ModalInstanceCtrl', function ($sco
       locations[index] = val.trim();
     });
     var data = {
-      name: $scope.snackName,
-      quantity: $scope.snackAmount,
-      snackImageUrl: $scope.snackImageUrl,
+      name: $scope.snackName || 'Not Available',
+      quantity: $scope.snackAmount || 1,
+      snackImageUrl: $scope.snackImageUrl || 'https://git.reviewboard.kde.org/media/uploaded/files/2015/07/18/a70d8ab6-1bbf-4dcc-b11f-524c2f56b14a__picture_default_cover.jpg',
       price: $scope.snackPrice || 0,
-      availableLocations: locations
+      availableLocations: locations || 'Not Available',
     }
 
     snackShoppingEntryService.requestNewItem(data).then(
