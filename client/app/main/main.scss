@@ -19,12 +19,117 @@
     color: #F5F5F5;
     text-align: center;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-    background: #4393B9;
+    background: #5EB547;
 }
 
 .footer {
     text-align: center;
     padding: 30px 0;
-    margin-top: 70px;
+
     border-top: 1px solid #E5E5E5;
+    color: #8d9999;
+}
+
+.page-header {
+    color: #fff;
+}
+
+.wish-list-body {
+    background-color: #303D2D;
+}
+
+.wish-list-footer {
+    background-color: #303D2D;
+    padding-top: 90px;
+}
+
+html, body, div[ng-app="altitudeLabsApp"], body > div:first-of-type {
+    height: 100%;
+}
+
+.snack-image {
+    padding-bottom: 43.75%;
+    /* margin-top: 36px; */
+    /* min-height: 300px; */
+    width: 70%;
+    /* min-width: 15vh; */
+    /* max-width: 300px; */
+    border: #fff solid 5px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+
+.snack-info {
+    width: 70%;
+    color: white;
+    padding: 4% 0px 0px 0;
+    margin: auto;
+}
+
+.snack-name {
+    font-size: 21px;
+}
+
+.wish-list-summary {
+    background-color: #222222;
+    position: fixed;
+    width: 100%;
+    // padding: 3vh;
+    bottom: 0px;
+    height: auto;
+    text-align: center;
+
+    > div {
+        display: inline-block;
+        color: #fff;
+        font-size: 30px;
+        margin: auto 0;
+        line-height: 90px;
+        text-align: center;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    button {
+        background-color: #5EB547;
+        color: #fff;
+        font-size: 30px;
+        /* margin-top: -6px; */
+        height: 50px;
+        line-height: 36px;
+    }
+}
+
+.snack-buttons {
+    text-align: right;
+}
+
+.snack-clear-float {
+    clear: both;
+}
+
+.snack-like-button {
+    margin: 5% 0 0 5%;
+    color: white;
+    background-color: #5EB547;
+    border-width: 1px;
+    border-color: rgba(48, 61, 45, 0.5);
+}
+
+.snack-update {
+    display: inline-block;
+    background-color: #5EB547;
+    border-width: 1px;
+    color: white;
+    border-color: rgba(48, 61, 45, 0.5);
+}
+
+.snack-location{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    line-height: 19px;
+    height: 19px;
+    white-space: nowrap;
 }

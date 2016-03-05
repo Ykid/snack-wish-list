@@ -1,0 +1,32 @@
+div(ng-include='"components/navbar/navbar.html"')
+
+header#banner.hero-unit
+  .container
+    h1 Previously we got...
+
+.wish-list-body
+  .container
+    .row
+      .col-lg-12
+        h1.page-header History:
+        .form-group
+          input.form-control(type='text', ng-model='filterName' placeholder='Filter by snack name')
+        .col-md-4.col-lg-4.col-sm-6(ng-repeat='snackItem in snackList | wishListFilter:filterName track by myTracking(snackItem)')
+          div.snack-image(ng-style="getBackgroundImage(snackItem.snackImageUrl)")
+          div.snack-info
+            div.snack-name {{snackItem.snackName}}
+            div Amount:&nbsp;&nbsp; {{snackItem.requestAmount}}
+            div.snack-location Shop: {{getLocations(snackItem)}}
+            div Price: {{snackItem.price}} HKD
+            div Requester: {{snackItem.requester}}
+            div Likes: {{snackItem.likes}}
+            div Requested: {{snackItem.requestedTimes}} times
+            div.snack-buttons
+              button.snack-like-button.btn.btn-default.btn-xs(ng-click="open('lg', snackItem)") order again
+          div.snack-clear-float
+
+  .wish-list-footer
+    footer.footer
+      .container
+        p
+          | Snacks Wish List Beta
